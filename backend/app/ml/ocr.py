@@ -50,13 +50,13 @@ class OCRService:
                 message=f"The uploaded PDF has too many pages (max {MAX_PAGES}). Please split it before processing.",
             )
 
-        easyocr_reader = self._get_reader(languages)
-        if easyocr_reader is None:
+        ocr_engine = self._get_reader(languages)
+        if ocr_engine is None:
             warnings.append(
                 ExtractionWarning(
-                    code="easyocr_unavailable",
+                    code="ocr_unavailable",
                     message=(
-                        "EasyOCR is not installed in the current environment, "
+                        "Tesseract OCR is not installed in the current environment, "
                         "so the API is falling back to the PDF text layer only."
                     ),
                 )
@@ -69,11 +69,11 @@ class OCRService:
                 raw_text_fragments.append(page_text)
                 word_tokens = self._tokens_from_text_layer(page, page_number=page_index + 1)
 
-                if not word_tokens and easyocr_reader is not None:
+                if not word_tokens and ocr_engine is not None:
                     word_tokens = self._tokens_from_ocr(
                         page=page,
                         page_number=page_index + 1,
-                        easyocr_reader=easyocr_reader,
+                        ocr_engine=ocr_engine,
                     )
                     # OCR was used, we need to populate the page text and raw fragments with the OCR results
                     # so that the AI models actually receive the extracted text!
@@ -97,18 +97,12 @@ class OCRService:
         return pages, warnings, raw_text_preview
 
     def _get_reader(self, languages: list[str]):
-        if self._reader is not None and getattr(self, "_last_languages", None) == languages:
-            return self._reader
-
         try:
-            # pyrefly: ignore [missing-import]
-            import easyocr
-        except ImportError:
+            import pytesseract
+            pytesseract.get_tesseract_version()
+            return pytesseract
+        except (ImportError, Exception):
             return None
-
-        self._reader = easyocr.Reader(languages, gpu=self._settings.easyocr_gpu)
-        self._last_languages = languages
-        return self._reader
 
     def _tokens_from_text_layer(self, page: fitz.Page, *, page_number: int) -> list[OCRToken]:
         tokens: list[OCRToken] = []
@@ -130,38 +124,36 @@ class OCRService:
 
         return tokens
 
-    def _tokens_from_ocr(self, *, easyocr_reader, page: fitz.Page, page_number: int) -> list[OCRToken]:
-        try:
-            import numpy as np
-        except ImportError as exc:
-            raise AppException(
-                status_code=500,
-                code="numpy_missing",
-                message="EasyOCR dependencies are incomplete in the runtime environment.",
-                details={"reason": str(exc)},
-            ) from exc
-
+    def _tokens_from_ocr(self, *, ocr_engine, page: fitz.Page, page_number: int) -> list[OCRToken]:
         pixmap = page.get_pixmap(matrix=fitz.Matrix(2, 2), alpha=False)
         image = Image.open(BytesIO(pixmap.tobytes("png"))).convert("RGB")
-        results = easyocr_reader.readtext(np.array(image), detail=1)
+        
+        pytesseract = ocr_engine
+        data = pytesseract.image_to_data(image, output_type=pytesseract.Output.DICT)
+        
         tokens: list[OCRToken] = []
-
-        for bbox_points, text, confidence in results:
-            clean_text = text.strip()
-            if not clean_text:
+        n_boxes = len(data['text'])
+        for i in range(n_boxes):
+            text = data['text'][i].strip()
+            conf = float(data['conf'][i])
+            
+            if not text or conf < 0:
                 continue
-
-            xs = [point[0] for point in bbox_points]
-            ys = [point[1] for point in bbox_points]
+                
+            x = float(data['left'][i])
+            y = float(data['top'][i])
+            w = float(data['width'][i])
+            h = float(data['height'][i])
+            
             tokens.append(
                 OCRToken(
-                    text=clean_text,
-                    confidence=float(confidence),
+                    text=text,
+                    confidence=conf / 100.0,
                     bbox=BoundingBox(
-                        x0=float(min(xs)),
-                        y0=float(min(ys)),
-                        x1=float(max(xs)),
-                        y1=float(max(ys)),
+                        x0=x,
+                        y0=y,
+                        x1=x + w,
+                        y1=y + h,
                     ),
                     page_number=page_number,
                 )
