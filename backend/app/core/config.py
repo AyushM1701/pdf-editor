@@ -14,7 +14,7 @@ class Settings(BaseSettings):
     hf_pipeline_task: str = "text-classification"
     hf_device: int = -1
     easyocr_gpu: bool = False
-    cors_origins: list[str] = ["http://localhost:5173"]
+    cors_origins: str | list[str] = ["http://localhost:5173"]
     gemini_api_key: str = ""
     gemini_model_name: str = "gemini-2.5-flash"
     use_local_storage: bool = True
