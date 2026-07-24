@@ -1,10 +1,10 @@
-# PDF Editor & AI Extractor 📄✨
+# PDF Editor & AI Extractor 
 
 A full-featured, browser-based PDF editor with an optional AI-powered data extraction backend. Edit, annotate, sign, redact, and merge PDFs — all locally in your browser. When you need AI muscle, the FastAPI backend handles OCR and structured extraction via Google Gemini.
 
 ---
 
-## ✨ Features
+## Features
 
 ### Local Editor (No Backend Required)
 - **Merge & Reorder** — Drag-and-drop multiple PDFs, reorder pages with a staging area
@@ -18,10 +18,10 @@ A full-featured, browser-based PDF editor with an optional AI-powered data extra
 - **Search & Find** — Full-text search across all pages with visual highlighting
 - **Metadata Editor** — Edit PDF title, author, subject, and keywords
 - **Export Options** — Quick export or use the advanced dialog for:
-  - 🔒 Password encryption (AES-256) with granular permissions
-  - 📦 Compression & optimization (image downscaling, garbage collection)
-  - ✍️ Cryptographic digital signatures (self-signed X.509 via pyHanko)
-  - 🟥 True redaction (permanently destroys underlying text via PyMuPDF)
+  - Password encryption (AES-256) with granular permissions
+  - Compression & optimization (image downscaling, garbage collection)
+  - Cryptographic digital signatures (self-signed X.509 via pyHanko)
+  - True redaction (permanently destroys underlying text via PyMuPDF)
 
 ### AI Extraction (Backend Required)
 - **Document Classification** — Automatically identify document type (invoice, ID, receipt, etc.)
@@ -32,7 +32,7 @@ A full-featured, browser-based PDF editor with an optional AI-powered data extra
 
 ---
 
-## 🛠 Tech Stack
+## Tech Stack
 
 | Layer | Technologies |
 |---|---|
@@ -44,7 +44,7 @@ A full-featured, browser-based PDF editor with an optional AI-powered data extra
 
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Prerequisites
 
@@ -108,7 +108,7 @@ Start the API server:
 uvicorn app.main:app --reload --host localhost --port 8000
 ```
 
-> ⚠️ **Redis Required for AI Extraction:** The backend needs Redis for the background job queue. Install Redis locally or run `docker run -d -p 6379:6379 redis:7-alpine`. If you only need local PDF editing (no AI), you can skip Redis, but the server will fail to start without it. See Option B for the easiest full-stack setup.
+> **Redis Required for AI Extraction:** The backend needs Redis for the background job queue. Install Redis locally or run `docker run -d -p 6379:6379 redis:7-alpine`. If you only need local PDF editing (no AI), you can skip Redis, but the server will fail to start without it. See Option B for the easiest full-stack setup.
 
 If using Redis, start the background worker in a separate terminal:
 
@@ -155,7 +155,7 @@ docker compose down
 
 ---
 
-## ⚙️ Configuration
+## Configuration
 
 All backend configuration is done through `backend/.env`. Here's what each setting does:
 
@@ -179,7 +179,7 @@ All backend configuration is done through `backend/.env`. Here's what each setti
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 pdf-editor/
@@ -217,7 +217,7 @@ pdf-editor/
 
 ---
 
-## 🔌 API Endpoints
+## API Endpoints
 
 All endpoints are prefixed with `/api`.
 
@@ -238,7 +238,7 @@ All endpoints are prefixed with `/api`.
 
 ---
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
 ### Frontend can't connect to backend
 - Verify the backend is running on `http://localhost:8000`
@@ -261,7 +261,7 @@ All endpoints are prefixed with `/api`.
 
 ---
 
-## 🧪 Development
+## Development
 
 ### Frontend production build
 ```bash
