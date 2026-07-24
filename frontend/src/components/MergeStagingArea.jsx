@@ -32,41 +32,51 @@ function StagingItem({ item, onUpdateRange, onRemove }) {
     <div
       ref={setNodeRef}
       style={style}
-      className={`flex items-center gap-4 p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl ${
+      className={`flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 p-3 sm:p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl ${
         isDragging ? 'shadow-xl z-10 ring-2 ring-slate-400 scale-[1.02]' : 'shadow-sm'
       }`}
     >
-      <button
-        type="button"
-        className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 cursor-grab active:cursor-grabbing p-1"
-        {...attributes}
-        {...listeners}
-      >
-        <GripVertical className="w-5 h-5" />
-      </button>
+      <div className="flex items-center gap-3 w-full sm:w-auto sm:flex-1 min-w-0">
+        <button
+          type="button"
+          className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 cursor-grab active:cursor-grabbing p-1 shrink-0"
+          {...attributes}
+          {...listeners}
+        >
+          <GripVertical className="w-5 h-5" />
+        </button>
 
-      <div className="w-10 h-10 rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center shrink-0">
-        <FileText className="w-5 h-5 text-slate-500" />
-      </div>
-
-      <div className="flex-1 min-w-0">
-        <h4 className="text-sm font-semibold text-slate-900 dark:text-slate-100 truncate">
-          {item.fileName}
-        </h4>
-        <div className="text-xs text-slate-500 dark:text-slate-400 flex items-center gap-2 mt-0.5">
-          {item.isLoading ? (
-            <span className="animate-pulse">Loading info...</span>
-          ) : item.isEncrypted ? (
-            <span className="flex items-center gap-1 text-amber-600 dark:text-amber-400 font-medium">
-              <Lock className="w-3 h-3" /> Encrypted (Will prompt on merge)
-            </span>
-          ) : (
-            <span>{item.pageCount} pages</span>
-          )}
+        <div className="w-10 h-10 rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center shrink-0">
+          <FileText className="w-5 h-5 text-slate-500" />
         </div>
+
+        <div className="flex-1 min-w-0">
+          <h4 className="text-sm font-semibold text-slate-900 dark:text-slate-100 truncate">
+            {item.fileName}
+          </h4>
+          <div className="text-xs text-slate-500 dark:text-slate-400 flex items-center gap-2 mt-0.5">
+            {item.isLoading ? (
+              <span className="animate-pulse">Loading info...</span>
+            ) : item.isEncrypted ? (
+              <span className="flex items-center gap-1 text-amber-600 dark:text-amber-400 font-medium">
+                <Lock className="w-3 h-3" /> <span className="truncate">Encrypted</span>
+              </span>
+            ) : (
+              <span>{item.pageCount} pages</span>
+            )}
+          </div>
+        </div>
+        
+        <button
+          onClick={() => onRemove(item.id)}
+          className="sm:hidden w-8 h-8 flex items-center justify-center rounded-lg text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition shrink-0"
+          title="Remove file"
+        >
+          <Trash2 className="w-4 h-4" />
+        </button>
       </div>
 
-      <div className="w-48 shrink-0 flex flex-col">
+      <div className="w-full sm:w-48 pl-12 sm:pl-0 shrink-0 flex flex-col">
         <label className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider mb-1">
           Pages to Extract
         </label>
@@ -82,7 +92,7 @@ function StagingItem({ item, onUpdateRange, onRemove }) {
 
       <button
         onClick={() => onRemove(item.id)}
-        className="w-8 h-8 flex items-center justify-center rounded-lg text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition shrink-0 ml-2"
+        className="hidden sm:flex w-8 h-8 items-center justify-center rounded-lg text-slate-400 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 transition shrink-0 ml-2"
         title="Remove file"
       >
         <Trash2 className="w-4 h-4" />
@@ -185,27 +195,27 @@ export function MergeStagingArea({ files, onConfirm, onCancel }) {
   const isAnyLoading = items.some((i) => i.isLoading);
 
   return (
-    <div className="animate-in fade-in slide-in-from-bottom-8 duration-700 w-full max-w-3xl mx-auto mt-8">
-      <div className="flex items-center justify-between mb-6">
+    <div className="animate-in fade-in slide-in-from-bottom-8 duration-700 w-full max-w-3xl mx-auto mt-8 px-4 sm:px-0">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-4">
         <div>
           <h2 className="text-2xl font-display font-semibold text-slate-900 dark:text-slate-100 tracking-tight">
             Merge Order & Pages
           </h2>
-          <p className="text-slate-600 dark:text-slate-400 mt-1">
+          <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400 mt-1">
             Drag to reorder files. Leave the page range blank to import all pages.
           </p>
         </div>
         <div className="flex gap-3">
           <button
             onClick={onCancel}
-            className="px-4 py-2 font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-xl transition"
+            className="flex-1 sm:flex-none px-4 py-2 font-semibold text-slate-600 dark:text-slate-300 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 sm:border-transparent hover:bg-slate-200 dark:hover:bg-slate-800 rounded-xl transition"
           >
             Cancel
           </button>
           <button
             onClick={handleConfirm}
             disabled={isAnyLoading || items.length === 0}
-            className="px-6 py-2 font-semibold text-white bg-slate-900 dark:bg-slate-100 dark:text-slate-900 hover:bg-slate-800 dark:hover:bg-white rounded-xl shadow-sm disabled:opacity-50 transition"
+            className="flex-[2] sm:flex-none px-6 py-2 font-semibold text-white bg-slate-900 dark:bg-slate-100 dark:text-slate-900 hover:bg-slate-800 dark:hover:bg-white rounded-xl shadow-sm disabled:opacity-50 transition"
           >
             Confirm & Merge
           </button>
