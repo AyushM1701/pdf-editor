@@ -30,9 +30,11 @@ export function Layout() {
     navigate('/');
   };
 
+  const isEditor = location.pathname === '/editor';
+
   return (
-    <main className="min-h-screen bg-[radial-gradient(circle_at_top_left,_rgba(244,188,120,0.28),_transparent_34%),radial-gradient(circle_at_top_right,_rgba(30,93,97,0.18),_transparent_28%),linear-gradient(180deg,_#f7f1e8_0%,_#efe7db_48%,_#e8dfd1_100%)] dark:bg-[radial-gradient(circle_at_top_left,_rgba(45,212,191,0.12),_transparent_34%),radial-gradient(circle_at_top_right,_rgba(56,189,248,0.1),_transparent_28%),linear-gradient(180deg,_#020617_0%,_#0f172a_48%,_#1e293b_100%)] text-slate-900 dark:text-slate-100 transition-colors duration-300">
-      <div className="mx-auto flex min-h-screen max-w-7xl flex-col gap-6 px-4 py-6 sm:px-6 lg:px-8">
+    <main className={`${isEditor ? 'h-[100dvh] overflow-hidden' : 'min-h-screen'} bg-[radial-gradient(circle_at_top_left,_rgba(244,188,120,0.28),_transparent_34%),radial-gradient(circle_at_top_right,_rgba(30,93,97,0.18),_transparent_28%),linear-gradient(180deg,_#f7f1e8_0%,_#efe7db_48%,_#e8dfd1_100%)] dark:bg-[radial-gradient(circle_at_top_left,_rgba(45,212,191,0.12),_transparent_34%),radial-gradient(circle_at_top_right,_rgba(56,189,248,0.1),_transparent_28%),linear-gradient(180deg,_#020617_0%,_#0f172a_48%,_#1e293b_100%)] text-slate-900 dark:text-slate-100 transition-colors duration-300`}>
+      <div className={`mx-auto flex ${isEditor ? 'h-full' : 'min-h-screen'} max-w-7xl flex-col gap-4 sm:gap-6 px-2 sm:px-6 lg:px-8 py-2 sm:py-6`}>
         
         {documents.length > 0 && (
           <header className="surface-card overflow-hidden px-4 py-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
@@ -68,7 +70,7 @@ export function Layout() {
           </header>
         )}
 
-        <div className="flex-1">
+        <div className="flex-1 min-h-0 flex flex-col">
           <Outlet />
         </div>
       </div>

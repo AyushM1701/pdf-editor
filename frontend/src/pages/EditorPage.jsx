@@ -42,7 +42,7 @@ export function EditorPage() {
   if (documents.length === 0) return null;
 
   return (
-    <div className="flex flex-col md:flex-row h-[calc(100vh-130px)] gap-4 mt-2 relative">
+    <div className="flex flex-col md:flex-row h-full gap-4 relative">
       {/* Mobile Backdrop */}
       {isSidebarOpen && (
         <div 
