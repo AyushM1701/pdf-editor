@@ -1,0 +1,60 @@
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: pdf_backend
+    expose:
+      - "8000"
+    volumes:
+      - pdf_data:/app/local_uploads
+    restart: unless-stopped
+    depends_on:
+      - redis
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/api/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    env_file:
+      - ./backend/.env
+    environment:
+      - REDIS_URL=redis://redis:6379
+
+  worker:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: pdf_worker
+    command: ["arq", "app.worker.WorkerSettings"]
+    volumes:
+      - pdf_data:/app/local_uploads
+    depends_on:
+      - redis
+    restart: unless-stopped
+    env_file:
+      - ./backend/.env
+    environment:
+      - REDIS_URL=redis://redis:6379
+
+  redis:
+    image: redis:7-alpine
+    container_name: pdf_redis
+    ports:
+      - "6379:6379"
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: pdf_frontend
+    ports:
+      - "8080:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+volumes:
+  pdf_data:

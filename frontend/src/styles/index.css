@@ -1,0 +1,289 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;700&display=swap');
+@import "tailwindcss";
+
+@custom-variant dark (&:is(.dark, .dark *));
+
+:root {
+  color: #15212c;
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-synthesis: none;
+  line-height: 1.5;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+code {
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.08);
+  padding: 0.15rem 0.45rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.85em;
+}
+
+::selection {
+  background: rgba(34, 119, 109, 0.2);
+}
+
+.font-display {
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+.surface-card {
+  position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.88) 0%, rgba(255, 255, 255, 0.74) 100%);
+  border-radius: 32px;
+  box-shadow:
+    0 30px 70px rgba(77, 53, 24, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(18px);
+}
+
+.section-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: #216b67;
+}
+
+.section-kicker::before {
+  content: '';
+  width: 2.5rem;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(33, 107, 103, 0) 0%, rgba(33, 107, 103, 0.85) 100%);
+}
+
+.section-kicker::after {
+  content: '';
+  width: 2.5rem;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(33, 107, 103, 0.85) 0%, rgba(33, 107, 103, 0) 100%);
+}
+
+.stat-card {
+  display: flex;
+  min-height: 110px;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 0.75rem;
+  border-radius: 28px;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.96) 0%, rgba(247, 242, 235, 0.84) 100%);
+  padding: 1rem;
+}
+
+.stat-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #516170;
+}
+
+.stat-value {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 2rem;
+  line-height: 1;
+  letter-spacing: -0.05em;
+  color: #0f1722;
+}
+
+.pill-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  border: 1px solid rgba(83, 102, 120, 0.18);
+  background: rgba(255, 255, 255, 0.78);
+  padding: 0.65rem 1rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #334155;
+}
+
+.input-group {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.input-group span {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #516170;
+}
+
+.input-group input,
+.input-group select,
+.input-group textarea {
+  width: 100%;
+  border: 1px solid rgba(148, 163, 184, 0.38);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.9);
+  color: #0f172a;
+  padding: 0.95rem 1rem;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.input-group input:focus,
+.input-group select:focus,
+.input-group textarea:focus {
+  outline: none;
+  border-color: rgba(33, 107, 103, 0.7);
+  box-shadow: 0 0 0 4px rgba(33, 107, 103, 0.12);
+  background: rgba(255, 255, 255, 1);
+}
+
+input[type='file']::file-selector-button {
+  margin-right: 0.75rem;
+  border: 1px solid rgba(148, 163, 184, 0.38);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.95);
+  color: #0f172a;
+  cursor: pointer;
+  padding: 0.55rem 0.9rem;
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease;
+}
+
+input[type='file']::file-selector-button:hover {
+  border-color: rgba(71, 85, 105, 0.55);
+  background: rgba(248, 250, 252, 1);
+}
+
+/* Dark Mode Overrides */
+.dark {
+  color: #f1f5f9;
+}
+
+.dark ::selection {
+  background: rgba(45, 212, 191, 0.25);
+}
+
+.dark .surface-card {
+  border-color: rgba(255, 255, 255, 0.1);
+  background: linear-gradient(180deg, rgba(30, 41, 59, 0.88) 0%, rgba(15, 23, 42, 0.88) 100%);
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.dark .section-kicker {
+  color: #5eead4;
+}
+
+.dark .section-kicker::before {
+  background: linear-gradient(90deg, rgba(94, 234, 212, 0) 0%, rgba(94, 234, 212, 0.85) 100%);
+}
+
+.dark .section-kicker::after {
+  background: linear-gradient(90deg, rgba(94, 234, 212, 0.85) 0%, rgba(94, 234, 212, 0) 100%);
+}
+
+.dark .stat-card {
+  border-color: rgba(255, 255, 255, 0.1);
+  background: linear-gradient(180deg, rgba(30, 41, 59, 0.96) 0%, rgba(15, 23, 42, 0.84) 100%);
+}
+
+.dark .stat-label {
+  color: #94a3b8;
+}
+
+.dark .stat-value {
+  color: #f8fafc;
+}
+
+.dark .pill-badge {
+  border-color: rgba(255, 255, 255, 0.1);
+  background: rgba(30, 41, 59, 0.78);
+  color: #cbd5e1;
+}
+
+.dark .input-group span {
+  color: #94a3b8;
+}
+
+.dark .input-group input,
+.dark .input-group select,
+.dark .input-group textarea {
+  border-color: rgba(255, 255, 255, 0.15);
+  background: rgba(30, 41, 59, 0.9);
+  color: #f1f5f9;
+}
+
+.dark .input-group input:focus,
+.dark .input-group select:focus,
+.dark .input-group textarea:focus {
+  border-color: rgba(45, 212, 191, 0.7);
+  box-shadow: 0 0 0 4px rgba(45, 212, 191, 0.12);
+  background: rgba(15, 23, 42, 1);
+}
+
+.dark input[type='file']::file-selector-button {
+  border-color: rgba(255, 255, 255, 0.15);
+  background: rgba(51, 65, 85, 0.95);
+  color: #f1f5f9;
+}
+
+.dark input[type='file']::file-selector-button:hover {
+  border-color: rgba(148, 163, 184, 0.55);
+  background: rgba(71, 85, 105, 1);
+}
+
+/* Utility: hide scrollbar while keeping scroll functionality */
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Animations for landing page transitions */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideInFromBottom {
+  from { transform: translateY(1rem); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.animate-in {
+  animation: fadeIn 0.5s ease-out forwards, slideInFromBottom 0.7s ease-out forwards;
+}
+
+.fade-in {
+  animation-name: fadeIn;
+}
+
+.slide-in-from-bottom-4 {
+  animation-name: slideInFromBottom;
+}
