@@ -38,7 +38,7 @@ A full-featured, browser-based PDF editor with an optional AI-powered data extra
 |---|---|
 | **Frontend** | React 19, Vite, Tailwind CSS v4, pdf-lib, pdfjs-dist, lucide-react |
 | **Backend** | Python 3.11+, FastAPI, PyMuPDF (fitz), pyHanko, arq + Redis |
-| **AI** | Google Gemini, EasyOCR, Hugging Face Transformers |
+| **AI** | Google Gemini, Tesseract OCR |
 | **Storage** | Local filesystem (default) or AWS S3 |
 | **Deployment** | Docker Compose (Nginx + FastAPI + Redis) |
 
@@ -55,7 +55,7 @@ A full-featured, browser-based PDF editor with an optional AI-powered data extra
 | **Redis** | 7+ | Backend (AI extraction queue) |
 | **Docker** | Latest | Docker deployment (optional) |
 
-> **Note:** Python 3.13 works but some ML libraries (EasyOCR, Transformers) don't have wheel support yet, so AI features may be limited.
+> **Note:** The backend has been optimized to run entirely within 512MB of RAM, making it perfectly compatible with free-tier hosting platforms like Render.
 
 ---
 
@@ -152,6 +152,18 @@ To stop:
 ```bash
 docker compose down
 ```
+
+---
+
+### Option C: Cloud Deployment (Vercel + Render Free Tier)
+
+This app is optimized to run on free-tier services.
+1. **Frontend:** Deploy the `frontend/` directory to **Vercel**. Ensure you add a `vercel.json` for React Router SPA fallbacks.
+2. **Backend:** Deploy the `backend/` directory as a **Render Web Service** (Docker environment).
+   - Set `Start Command` to: `bash start.sh` (this boots both FastAPI and the Arq worker in one container).
+   - Add environment variables (`GEMINI_API_KEY`, `REDIS_URL`, etc).
+3. **Redis:** Use a free Upstash Redis database and set its URL as `REDIS_URL` in your Render environment.
+4. **CORS & S3:** Make sure `CORS_ORIGINS` in Render includes your Vercel URL, and your S3 bucket's CORS policy also allows your Vercel URL.
 
 ---
 
