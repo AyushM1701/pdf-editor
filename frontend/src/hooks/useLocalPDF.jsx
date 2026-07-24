@@ -363,16 +363,8 @@ export function useLocalPDF() {
             const viewport = pdfJsPage.getViewport({ scale: 1 });
             const rotate = pdfJsPage.rotate;
             
-            let thumbnailWidth, thumbnailHeight;
-            if (viewport.width > viewport.height) {
-              thumbnailWidth = 200;
-              thumbnailHeight = (viewport.height / viewport.width) * 200;
-            } else {
-              thumbnailHeight = 200;
-              thumbnailWidth = (viewport.width / viewport.height) * 200;
-            }
-
-            const thumbnailUrl = await renderPageThumbnail(pdfJsPage, thumbnailWidth, thumbnailHeight);
+            const thumbnailResult = await renderPageThumbnail(pdfJsDocument, sourcePageIndex);
+            const thumbnailUrl = thumbnailResult.thumbnailUrl;
 
             const pageFields = extractedFields
               .filter((f) => f.sourcePageIndex === sourcePageIndex)
@@ -407,8 +399,8 @@ export function useLocalPDF() {
               height: Math.round(viewport.height),
               rotation: rotate,
               thumbnailUrl,
-              thumbnailWidth: Math.ceil(viewport.width),
-              thumbnailHeight: Math.ceil(viewport.height),
+              thumbnailWidth: thumbnailResult.thumbnailWidth,
+              thumbnailHeight: thumbnailResult.thumbnailHeight,
               annotations: [],
               formFields: pageFields,
               textItems,
