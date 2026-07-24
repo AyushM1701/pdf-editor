@@ -47,7 +47,7 @@ async def get_extraction_status(job_id: str, request: Request, api_key: str | No
         
     job = Job(job_id, redis)
     status = await job.status()
-    from arq.constants import JobStatus as ArqJobStatus
+    from arq.jobs import JobStatus as ArqJobStatus
     
     if status == ArqJobStatus.not_found:
         raise HTTPException(status_code=404, detail="Job not found")
