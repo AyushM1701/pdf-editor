@@ -38,7 +38,7 @@ export function Layout() {
           <header className="surface-card overflow-hidden px-4 py-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
             <div className="absolute inset-x-0 top-0 h-1 bg-[linear-gradient(90deg,_#1f6f68_0%,_#d48d49_52%,_#304e7c_100%)]" />
             
-            <div className="flex items-center gap-2 overflow-x-auto w-full sm:w-auto pb-2 sm:pb-0 hide-scrollbar">
+            <div className="flex items-center gap-2 overflow-x-auto w-full sm:w-auto max-w-full pb-2 sm:pb-0 hide-scrollbar scroll-smooth">
               <button
                 onClick={() => navigate('/')}
                 className="flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-200 transition shrink-0"
@@ -53,7 +53,7 @@ export function Layout() {
               <NavLink to="/ai-extraction" icon={Sparkles} label="AI Extract" isActive={location.pathname === '/ai-extraction'} />
             </div>
 
-            <div className="shrink-0 w-full sm:w-auto flex flex-wrap sm:flex-nowrap items-center justify-between sm:justify-end gap-2">
+            <div className="shrink-0 w-full sm:w-auto flex flex-col sm:flex-row items-start sm:items-center justify-between sm:justify-end gap-4 mt-2 sm:mt-0">
               <ThemeToggle />
               <Toolbar
                 documentCount={documents.length}
