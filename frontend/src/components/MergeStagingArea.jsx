@@ -33,7 +33,7 @@ function StagingItem({ item, onUpdateRange, onRemove }) {
     <div
       ref={setNodeRef}
       style={style}
-      className={`flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 p-3 sm:p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl ${
+      className={`flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 p-3 sm:p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl w-full min-w-0 ${
         isDragging ? 'shadow-xl z-10 ring-2 ring-slate-400 scale-[1.02]' : 'shadow-sm'
       }`}
     >
@@ -224,10 +224,10 @@ export function MergeStagingArea({ files, onConfirm, onCancel }) {
         </div>
       </div>
 
-      <div className="bg-slate-50 dark:bg-slate-800/50 rounded-3xl p-6 border border-slate-200 dark:border-slate-700">
+      <div className="bg-slate-50 dark:bg-slate-800/50 rounded-3xl p-4 sm:p-6 border border-slate-200 dark:border-slate-700 w-full min-w-0">
         <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
           <SortableContext items={items.map((i) => i.id)} strategy={verticalListSortingStrategy}>
-            <div className="space-y-3">
+            <div className="space-y-3 w-full min-w-0">
               {items.map((item) => (
                 <StagingItem
                   key={item.id}
