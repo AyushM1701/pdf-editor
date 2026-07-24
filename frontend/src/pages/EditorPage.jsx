@@ -31,6 +31,7 @@ export function EditorPage() {
   const [activeTool, setActiveTool] = useState('select'); // 'select', 'text', 'crop'
   const [selectedAnnotationId, setSelectedAnnotationId] = useState(null);
   const [zoomLevel, setZoomLevel] = useState(1); // 1 = 100% size of PDF points
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   useEffect(() => {
     if (documents.length === 0) {
@@ -41,10 +42,22 @@ export function EditorPage() {
   if (documents.length === 0) return null;
 
   return (
-    <div className="flex h-[calc(100vh-130px)] gap-4 mt-2">
+    <div className="flex flex-col md:flex-row h-[calc(100vh-130px)] gap-4 mt-2 relative">
+      {/* Mobile Backdrop */}
+      {isSidebarOpen && (
+        <div 
+          className="md:hidden fixed inset-0 bg-slate-900/20 backdrop-blur-sm z-40"
+          onClick={() => setIsSidebarOpen(false)}
+        />
+      )}
+
       {/* Left Sidebar - Thumbnails */}
-      <div className="w-64 flex-shrink-0 bg-white/90 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-700 rounded-2xl overflow-hidden flex flex-col shadow-sm">
-        <EditorSidebar />
+      <div className={`
+        ${isSidebarOpen ? 'flex absolute inset-y-0 left-0 z-50 shadow-2xl h-full' : 'hidden'} 
+        md:flex md:relative md:z-auto md:shadow-sm md:h-auto
+        w-72 md:w-64 flex-shrink-0 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border border-slate-200 dark:border-slate-700 rounded-r-2xl md:rounded-2xl overflow-hidden flex-col transition-all duration-300
+      `}>
+        <EditorSidebar onClose={() => setIsSidebarOpen(false)} />
       </div>
 
       {/* Main Content Area */}
@@ -54,6 +67,7 @@ export function EditorPage() {
           setActiveTool={setActiveTool} 
           zoomLevel={zoomLevel}
           setZoomLevel={setZoomLevel}
+          onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
         />
         
         <div className="flex-1 overflow-hidden flex relative">

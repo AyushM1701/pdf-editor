@@ -180,11 +180,11 @@ export function AIExtractionPanel({
             )}
 
             <div className="space-y-2 mt-6">
-              <div className="flex items-center justify-between">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <h3 className="text-sm font-semibold uppercase tracking-[0.18em] text-slate-600 dark:text-slate-400">
                   Key values
                 </h3>
-                <div className="relative w-64">
+                <div className="relative w-full sm:w-64">
                   <div className="absolute inset-y-0 left-0 pl-2.5 flex items-center pointer-events-none">
                     <Search className="h-4 w-4 text-slate-400" />
                   </div>
@@ -227,17 +227,17 @@ export function AIExtractionPanel({
               </div>
             </div>
 
-            <div className="flex gap-3 pt-2">
+            <div className="flex flex-wrap gap-3 pt-2">
               <button
                 onClick={handleDownloadJson}
-                className="px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-xl hover:bg-slate-50 transition"
+                className="flex-1 sm:flex-none text-center px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition"
               >
                 Download JSON
               </button>
               {deferredResult.fields.length > 0 && (
                 <button
                   onClick={handleDownloadCsv}
-                  className="px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-slate-300 rounded-xl hover:bg-slate-50 transition"
+                  className="flex-1 sm:flex-none text-center px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition"
                 >
                   Download CSV
                 </button>

@@ -8,14 +8,14 @@ function NavLink({ to, icon: Icon, label, isActive }) {
   return (
     <Link
       to={to}
-      className={`flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-xl transition ${
+      className={`flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-xl transition shrink-0 whitespace-nowrap ${
         isActive
           ? 'bg-slate-900 text-white'
           : 'text-slate-600 dark:text-slate-400 hover:bg-slate-200 hover:text-slate-900 dark:text-slate-100'
       }`}
     >
-      <Icon className="w-4 h-4" />
-      <span className="hidden sm:inline">{label}</span>
+      <Icon className="w-4 h-4 shrink-0" />
+      <span>{label}</span>
     </Link>
   );
 }
@@ -53,7 +53,7 @@ export function Layout() {
               <NavLink to="/ai-extraction" icon={Sparkles} label="AI Extract" isActive={location.pathname === '/ai-extraction'} />
             </div>
 
-            <div className="shrink-0 w-full sm:w-auto flex items-center gap-2">
+            <div className="shrink-0 w-full sm:w-auto flex flex-wrap sm:flex-nowrap items-center justify-between sm:justify-end gap-2">
               <ThemeToggle />
               <Toolbar
                 documentCount={documents.length}

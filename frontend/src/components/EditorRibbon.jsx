@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { MousePointer2, Type, Crop, RotateCw, Trash2, ZoomIn, ZoomOut, Undo2, Redo2, Download, Pen, Highlighter, Square, Circle, PenLine, ShieldAlert, Copy } from 'lucide-react';
+import { MousePointer2, Type, Crop, RotateCw, Trash2, ZoomIn, ZoomOut, Undo2, Redo2, Download, Pen, Highlighter, Square, Circle, PenLine, ShieldAlert, Copy, Menu } from 'lucide-react';
 import { usePdf } from '../hooks/usePdf';
 import { ExportDialog } from './ExportDialog';
 import { SignatureModal } from './SignatureModal';
@@ -8,7 +8,7 @@ function ToolButton({ icon: Icon, label, isActive, onClick, isDanger }) {
   return (
     <button
       onClick={onClick}
-      className={`flex items-center justify-center w-10 h-10 rounded-xl transition ${
+      className={`flex items-center justify-center w-10 h-10 rounded-xl transition shrink-0 ${
         isActive
           ? 'bg-slate-900 text-white shadow-md'
           : isDanger
@@ -22,7 +22,7 @@ function ToolButton({ icon: Icon, label, isActive, onClick, isDanger }) {
   );
 }
 
-export function EditorRibbon({ activeTool, setActiveTool, zoomLevel, setZoomLevel }) {
+export function EditorRibbon({ activeTool, setActiveTool, zoomLevel, setZoomLevel, onToggleSidebar }) {
   const { selectedPage, rotatePage, duplicatePage, removePage, undo, redo, canUndo, canRedo, exportDocument, signatureDataUrl, setSignatureDataUrl } = usePdf();
   const [showExportDialog, setShowExportDialog] = useState(false);
   const [showSignatureModal, setShowSignatureModal] = useState(false);
@@ -31,8 +31,16 @@ export function EditorRibbon({ activeTool, setActiveTool, zoomLevel, setZoomLeve
   const handleZoomOut = () => setZoomLevel(z => Math.max(z - 0.2, 0.2));
 
   return (
-    <div className="flex items-center justify-between px-4 py-3 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700 shadow-sm z-10 relative">
-      <div className="flex items-center gap-2">
+    <div className="flex items-center justify-between px-4 py-3 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700 shadow-sm z-10 relative overflow-x-auto hide-scrollbar gap-4">
+      <div className="flex items-center gap-2 shrink-0">
+        <button
+          onClick={onToggleSidebar}
+          className="md:hidden flex items-center justify-center w-10 h-10 rounded-xl transition text-slate-600 dark:text-slate-400 hover:bg-slate-200 hover:text-slate-900 dark:text-slate-100"
+          title="Toggle Sidebar"
+        >
+          <Menu className="w-5 h-5" />
+        </button>
+        <div className="md:hidden w-px h-6 bg-slate-200 mx-1 shrink-0" />
         <ToolButton
           icon={MousePointer2}
           label="Select (V)"
@@ -120,7 +128,7 @@ export function EditorRibbon({ activeTool, setActiveTool, zoomLevel, setZoomLeve
         </button>
       </div>
 
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-2 shrink-0">
         <div className="flex items-center bg-slate-100 rounded-xl px-1 mr-2">
           <ToolButton icon={ZoomOut} label="Zoom Out" onClick={handleZoomOut} />
           <span className="text-xs font-semibold text-slate-700 dark:text-slate-300 min-w-[3rem] text-center">

@@ -91,7 +91,7 @@ export function ExportDialog({ onClose, onExport }) {
               className="w-full px-4 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 dark:text-slate-100 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-900 dark:focus:ring-slate-100 transition"
             />
             {watermark.text && (
-              <div className="grid grid-cols-2 gap-4 mt-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-3">
                 <div className="space-y-1">
                   <label className="text-xs font-medium text-slate-500">Opacity: {watermark.opacity}</label>
                   <input 
@@ -129,7 +129,7 @@ export function ExportDialog({ onClose, onExport }) {
 
             {encrypt && (
               <div className="space-y-4 pl-8 mb-4">
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div className="space-y-1">
                     <label className="text-xs font-medium text-slate-500">Document Password (User)</label>
                     <input
@@ -154,7 +154,7 @@ export function ExportDialog({ onClose, onExport }) {
                 
                 <div className="space-y-2">
                   <p className="text-xs font-medium text-slate-500">Permissions</p>
-                  <div className="grid grid-cols-2 gap-2">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                     <label className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400">
                       <input 
                         type="checkbox" 
