@@ -359,12 +359,29 @@ export function useLocalPDF() {
           // Filter down to the user-selected pages, maintaining their order
           for (let idx = 0; idx < validPageIndices.length; idx++) {
             const sourcePageIndex = validPageIndices[idx];
-            const pdfJsPage = await pdfJsDocument.getPage(sourcePageIndex + 1);
-            const viewport = pdfJsPage.getViewport({ scale: 1 });
-            const rotate = pdfJsPage.rotate;
+            let viewport = { width: 595, height: 842 };
+            let rotate = 0;
+            let pdfJsPage = null;
             
-            const thumbnailResult = await renderPageThumbnail(pdfJsDocument, sourcePageIndex);
-            const thumbnailUrl = thumbnailResult.thumbnailUrl;
+            try {
+              pdfJsPage = await pdfJsDocument.getPage(sourcePageIndex + 1);
+              viewport = pdfJsPage.getViewport({ scale: 1 });
+              rotate = pdfJsPage.rotate;
+            } catch (err) {
+              console.warn(`Failed to get page ${sourcePageIndex + 1} from pdfjs`, err);
+            }
+            
+            let thumbnailUrl = '';
+            let thumbnailWidth = 100;
+            let thumbnailHeight = 150;
+            try {
+              const thumbnailResult = await renderPageThumbnail(pdfJsDocument, sourcePageIndex);
+              thumbnailUrl = thumbnailResult.thumbnailUrl;
+              thumbnailWidth = thumbnailResult.thumbnailWidth;
+              thumbnailHeight = thumbnailResult.thumbnailHeight;
+            } catch (err) {
+              console.warn(`Failed to render thumbnail for page ${sourcePageIndex + 1}`, err);
+            }
 
             const pageFields = extractedFields
               .filter((f) => f.sourcePageIndex === sourcePageIndex)
@@ -379,16 +396,23 @@ export function useLocalPDF() {
                 return { ...f, xPercent, yPercent, widthPercent, heightPercent };
               });
               
-            const textContent = await pdfJsPage.getTextContent();
-            const textItems = textContent.items.map(item => {
-              const x = item.transform[4];
-              const y = item.transform[5];
-              const xPercent = (x / viewport.width) * 100;
-              const yPercent = ((viewport.height - (y + item.height)) / viewport.height) * 100;
-              const widthPercent = (item.width / viewport.width) * 100;
-              const heightPercent = (item.height / viewport.height) * 100;
-              return { str: item.str, xPercent, yPercent, widthPercent, heightPercent };
-            });
+            let textItems = [];
+            try {
+              if (pdfJsPage) {
+                const textContent = await pdfJsPage.getTextContent();
+                textItems = textContent.items.map(item => {
+                  const x = item.transform[4];
+                  const y = item.transform[5];
+                  const xPercent = (x / viewport.width) * 100;
+                  const yPercent = ((viewport.height - (y + item.height)) / viewport.height) * 100;
+                  const widthPercent = (item.width / viewport.width) * 100;
+                  const heightPercent = (item.height / viewport.height) * 100;
+                  return { str: item.str, xPercent, yPercent, widthPercent, heightPercent };
+                });
+              }
+            } catch (err) {
+              console.warn(`Failed to extract text for page ${sourcePageIndex + 1}`, err);
+            }
 
             preparedPages.push({
               id: crypto.randomUUID(),
@@ -408,7 +432,9 @@ export function useLocalPDF() {
               fileSize: file.size,
             });
             
-            pdfJsPage.cleanup();
+            if (pdfJsPage) {
+              pdfJsPage.cleanup();
+            }
           }
         } finally {
           await pdfJsDocument.destroy();
